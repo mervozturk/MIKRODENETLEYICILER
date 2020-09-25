@@ -1,0 +1,41 @@
+TrisB=0                  ' ~ işareti degil alma
+PortB=1
+i var byte
+i=1
+bekle con 200
+label:
+    while i<128
+        pause 500
+        i=i<<1
+        PortB=i
+        
+         
+    wend
+    while i>1
+        pause 500
+        i=i>>1
+        PortB=i
+        
+    wend
+
+goto label
+
+
+'TrisB=0
+'PortB=1
+'i var byte
+'i=1
+'bekle con 200
+'label:
+''    while i<128
+''        PortB=i
+''        i=i*2
+''        pause bekle
+''    wend
+    
+''    while i>1
+''        PortB=i
+''        i=i/2
+''        pause bekle
+''    wend
+'goto label
