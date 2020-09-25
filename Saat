@@ -1,34 +1,72 @@
-include "lcdkütüphane.pbp"                     '00:00:00 şeklinde saati yaz
+include "lcdkütüphane.pbp"                  
 
+define HSER_RCSTA 90H
+define HSER_TXSTA 24H
+define HSER_BAUD 9600
+define HSER_CLROERR 1
+
+k var byte
 i var byte
 d var byte
 s var byte
 
-label:
-for s=0 to 23
-    for d=0 to 59
-        for i=0 to 59
-            lcdout $fe,1
-            if i<10 and d<10 and s<10 then  
-                lcdout "0",#s,":0",#d,":0",#i
-            elseif i>9 and d<10 and s<10 then  
-                lcdout "0",#s,":0",#d,":",#i
-            elseif i<10 and d>9 and s<10 then  
-                lcdout "0",#s,":",#d,":0",#i
-            elseif i>9 and d>9 and s<10 then  
-                lcdout "0",#s,":",#d,":",#i
-            elseif i<10 and d<10 and s>9 then  
-                lcdout #s,":0",#d,":0",#i
-            elseif i>9 and d<10 and s>9 then  
-                lcdout #s,":0",#d,":",#i
-            elseif i<10 and d>9 and s>9 then  
-                lcdout #s,":",#d,":0",#i
-            else
-                lcdout #s,":",#d,":",#i
-            endif
-            pause 100
-        next i
-    next d
-next s
 
-goto label
+saat:
+while s<24
+    while d<60
+        hserout ["Saati ayarlamak icin SPACE e biniz",13,10]
+        while i<60
+           
+            i=i+1
+            lcdout $fe,1,#(s dig 1),#(s dig 0),":",#(d dig 1),#(d dig 0),":",#(i dig 1),#(i dig 0)
+            hserin 100,hadi,[k]
+            if k==" " then
+                goto label
+            else  
+                hserout ["Yanlis bastin.Saati ayarlamak icin SPACE e biniz",13,10]
+            endif
+            hadi:
+         
+           
+        wend
+       
+        i=0
+        d=d+1
+    wend
+    d=0
+    s=s+1
+wend
+s=0
+goto saat
+
+label:
+saatduzeltme:
+hserout ["Saati giriniz: ",13,10]
+hserin [dec2 s]
+if s<=23 then
+hserout ["saat : ",dec2 s,13,10]
+else
+    hserout ["en fazla 23 giriniz",13,10]
+    goto saatduzeltme
+endif
+dakikaduzeltme:
+hserout ["Dakikayi giriniz: ",13,10]
+hserin [dec2 d]
+if d<=59 then
+hserout ["dakika : ",dec2 d,13,10]
+else
+    hserout ["en fazla 59 giriniz",13,10]
+    goto dakikaduzeltme
+endif
+saniyeduzeltme:
+hserout ["Saniyeyi giriniz: ",13,10]
+hserin [dec2 i]
+if i<=59 then
+hserout ["saniye : ",dec2 i,13,10]
+else
+    hserout ["en fazla 59 giriniz",13,10]
+    goto saniyeduzeltme
+endif
+
+k=5
+goto saat
