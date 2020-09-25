@@ -1,0 +1,36 @@
+TrisA=%000111
+PortB=0
+
+symbol ileri=portA.0                 
+symbol geri=portA.1
+symbol dur=portA.2
+
+a var byte
+label:
+    if ileri=0 then a=1
+    if geri=0 then a=2
+    if dur=0 then a=3
+    
+    if a=1 then 
+        PortB.0=0 
+        PortB.1=1
+        PortB.2=1
+        PortB.3=0
+        lcdout $fe,1,"ileri donuyor"
+        pause 100
+    endif
+    if a=2 then 
+        PortB.0=1
+        PortB.1=0
+        PortB.2=0
+        PortB.3=1
+        lcdout $fe,1,"geri donuyor"
+        pause 100
+    endif
+    if a=3 then
+        PortB=0
+        lcdout $fe,1,"duruyor"
+        pause 100
+    endif
+    
+goto label
