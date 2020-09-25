@@ -1,0 +1,12 @@
+TrisB=%00000000     ' TrisB=0 , TrisB=$00 '          
+                    'atadigimiz deger 0 ise output 1 ise input'
+                    '*portB.0=0 'portB=0 baslangicta hepsi sonuk olcak'
+dongu:
+    portB.0=1
+        pause 500
+    portB.0=0                          
+        pause 500
+    
+goto dongu
+
+                                      -
