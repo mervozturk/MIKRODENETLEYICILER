@@ -1,0 +1,32 @@
+include "lcdkütüphane.pbp" 
+
+define HSER_RCSTA 90H
+define HSER_TXSTA 24H
+define HSER_BAUD 9600
+define HSER_CLROERR 1
+
+i var byte
+j var byte 
+label:
+
+'    HSERIN[i]
+'    HSEROUT[i,13,10]  'terminalde alt alta yazmamızzı sağlar
+'    'hserout [i]
+'    LCDOUT i
+
+'-------------------------
+
+'    hserin [wait ("a"),i]
+'    hserout [i]
+'    lcdout i
+
+    hserin 1000,devam,[i]
+    hserout["girilen veri: ",i,13,10]
+    lcdout i
+    
+goto label
+
+devam:
+    hserout["bisiler gir ",13,10]
+    
+goto label
