@@ -1,0 +1,77 @@
+include "lcdkütüphane.pbp" 
+TrisB=%11110000
+
+i var byte
+j var byte
+k var byte
+v var byte
+x var byte
+a var byte
+k=" "
+i=" "
+j=" "
+x=" "
+
+label:
+
+    lcdout $fe,1
+    portb.0=1 : portb.1=0 :  portb.2=0 : portb.3=0
+    if portb.4=1 then i=7
+    if portb.5=1 then i=8
+    if portb.6=1 then i=9
+    if portb.7=1 then j="/" : k=i
+   
+    portb.0=0 : portb.1=1 :  portb.2=0 : portb.3=0
+    if portb.4=1 then i=4
+    if portb.5=1 then i=5
+    if portb.6=1 then i=6
+    if portb.7=1 then j="*" : k=i
+   
+     portb.0=0 : portb.1=0 :  portb.2=1 : portb.3=0
+    if portb.4=1 then i=1
+    if portb.5=1 then i=2
+    if portb.6=1 then i=3
+    if portb.7=1 then j="-"  : k=i
+   
+   
+    portb.0=0 : portb.1=0 :  portb.2=0 : portb.3=1
+    if portb.4=1 then i=0
+    if portb.5=1 then i=0
+    if portb.7=1 then j="+" :   k=i 
+    if portb.6 = 1 then goto islem
+    
+    x=i
+    if x!=" " and j=" " then lcdout $fe,1,#x
+    pause 100
+   
+    if j!=" " then lcdout $fe,1,#x,j
+    pause 100 
+    
+    if  k!=" " then lcdout $fe,1,#k,j,#x
+    pause 100
+   
+goto label
+
+islem:
+Select case j
+
+Case "/"
+v = k/i
+case "*"
+v=k*i
+case "+"
+v=k+i
+case "-"
+if k>=i then
+v=k-i
+else
+v=i-k
+endif
+
+end select
+
+lcdout "=",#v
+pause 1000
+ 
+
+goto islem
