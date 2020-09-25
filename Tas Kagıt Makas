@@ -1,0 +1,96 @@
+include "lcdkütüphane.pbp" 
+define HSER_RCSTA 90H
+define HSER_TXSTA 24H
+define HSER_BAUD 9600
+define HSER_CLROERR 1
+
+TRISB=0
+
+symbol ses=portB.0
+
+lcdout $fe,$40,27,27,17,10,4,10,17         ' makas
+lcdout $fe,$48,31,31,31,31,31,31,31         'kagıt
+lcdout $fe,$50,4,14,31,14,4                 'taş
+
+bir var byte
+iki var byte
+d var byte
+
+label:
+        
+      hserout ["tas kagit makas oyununa hosgeldiniz",13,10]
+        hserout["tas=t kagit=k  makas=m",13,10]
+        birincioyuncu:
+        lcdout $fe,1
+        hserout["birinci oyuncu",13,10]
+        devam:
+        gosub alarm
+        lcdout "Birinci oyuncu:"
+        pause 200
+        hserin 10000,devam,[bir]
+        if bir!="t" then
+            if bir!="k" then
+            if bir!="m" then
+            hserout ["yanlis girdiniz",13,10]
+            sound ses,[50,20]
+            goto birincioyuncu
+            endif
+            endif
+        endif
+        ikincioyuncu:
+        lcdout $fe,1
+        hserout ["ikinci oyuncu:",13,10]
+        devam1:
+        gosub alarm
+        lcdout "ikinci oyuncu:"
+        pause 200
+        hserin 10000,devam1,[iki]
+        if iki!="t"  then 
+            if iki!="k" then
+            if iki!="m" then
+            hserout ["yanlis girdiniz",13,10]
+            sound ses,[50,20]
+            goto ikincioyuncu
+            endif
+            endif
+        endif
+        lcdout $fe,1
+        if bir==iki then
+            lcdout "berabere"
+        elseif bir="t" and iki="m" then
+            lcdout 2," ",0," kirar"
+            lcdout $fe,$C0,"Birinci kazandi"
+            gosub alarm
+        elseif bir="t" and iki="k" then
+            lcdout 1," ",2," sarar"
+            lcdout $fe,$C0,"Ikinci kazandi"
+            gosub alarm
+        elseif bir="k" and iki="t" then
+            lcdout 1," ",2," sarar"
+            lcdout $fe,$C0,"Birinci kazandi"
+            gosub alarm
+        elseif bir="k" and iki="m" then
+            lcdout 0," ",1," keser"
+            lcdout $fe,$C0,"Ikinci kazandi"
+            gosub alarm
+        elseif bir="m" and iki="t" then
+            lcdout 2," ",0," kirar"
+            lcdout $fe,$C0,"Ikinci kazandi"
+            gosub alarm
+        elseif bir="m" and iki="k" then
+            lcdout 0," ",1," keser"
+            lcdout $fe,$C0,"Birinci kazandi"
+            gosub alarm
+        endif
+       pause 1000
+        hserout ["Tekrar oynamak icin -SPACE- basiniz"]
+        hserin [d]
+        if d=" " then
+            goto label
+        endif
+end   
+
+alarm:
+    sound ses,[70,50]
+return
+    
