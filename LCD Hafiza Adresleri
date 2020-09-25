@@ -1,0 +1,24 @@
+'lcd hafıza adresleri    hafızadaki karşılık geldikleri yer
+'        $40                         0
+'        $48                         1
+'        $58                         3
+'        $60                         4
+'        $68                         5
+'        $70                         6
+       $50                         2
+' '        $78                         7
+
+include "lcdkütüphane.pbp"     
+
+lcdout $fe,$40,15,16,16,16,16,15,2      'ç
+lcdout $fe,$48,10,0,14,17,17,17,14      'ö
+lcdout $fe,$50,10,0,17,17,17,17,14      'ü
+lcdout $fe,$58,15,16,14,1,1,30,4        'ş
+lcdout $fe,$60,4,0,4,4,4,4,4            'i
+label:
+    lcdout $fe,1
+    lcdout $fe,$80,0,1
+    lcdout "L "
+    lcdout $fe,$C0,"G",2,"NE",3,4
+    pause 100
+goto label
