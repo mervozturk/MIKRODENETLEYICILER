@@ -1,2 +1,2 @@
-# Programlanabilir-Denetleyiciler
-Programlanabilir Denetleyiciler dersinde yazdığım kodlar
+# Mikrodenetleyiciler
+Mikrodenetleyiciler dersinde yazdığım kodlar
