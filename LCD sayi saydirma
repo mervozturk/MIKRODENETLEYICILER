@@ -1,0 +1,23 @@
+'DEfine LCD_DREG PORTD            
+'define LCD_DBIT 0
+'define LCD_RSREG PORTE
+'define LCD_RSBIT 0
+'define LCD_EREG PORTE
+'define LCD_EBIT 2
+'define LCD_BITS 8               
+'ADCON1=7
+'PAUSE 100
+
+include "lcdkütüphane.pbp"
+
+i var byte
+label:
+    for i=10 to 0 step -1 'step yazmazsan +1 dir . step 3, step -2 de koymak zorundasın.
+        lcdout $fe,1
+        lcdout #i
+        if i==0   then lcdout $fe,$C0,"booom"
+        pause 500
+    next i
+    
+
+end
